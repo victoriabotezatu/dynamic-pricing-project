@@ -10,7 +10,7 @@ The dataset contains information about:
 
 * ride-sharing demand
 * driver supply
-* customer details
+* customer loyalty and ride history
 * ride duration
 * historical ride cost
 
