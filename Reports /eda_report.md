@@ -28,6 +28,15 @@ The dataset includes information about:
 
 The main pricing variable analyzed in this report is `Historical_Cost_of_Ride`.
 
+## Data Dictionary and Categorical Overview
+
+Created a data dictionary in the EDA notebook to summarize the structure of the dataset. This overview included the column names, data types, missing values, and number of unique values for each column.
+
+A categorical overview was also created for `Location_Category`, `Customer_Loyalty_Status`, `Time_of_Booking`, and `Vehicle_Type`. This helped confirm the main category labels used in the dataset before continuing with the analysis.
+
+This step supports the EDA by providing a clearer understanding of the dataset structure and the variables available for pricing analysis.
+
+
 ## New Columns Created
 
 Three new columns were created during the EDA process:
@@ -39,6 +48,14 @@ Three new columns were created during the EDA process:
 These columns were created because the dataset does not include real-time information such as customer coordinates, driver coordinates, waiting time, or driver arrival time.
 
 The new columns help analyze demand pressure, supply availability, and pricing differences more clearly.
+
+## Focused Data Filtering
+
+Added a focused filtering step to identify rides with above-average historical cost. This was done by calculating the average value of `Historical_Cost_of_Ride` and selecting rides where the historical ride cost was higher than this average.
+
+The filtered table included important pricing variables such as vehicle type, location category, time of booking, demand-supply ratio, and historical ride cost.
+
+This section helps focus on higher-cost ride scenarios, which may be more important for understanding pricing pressure and dynamic pricing factors.
 
 ## Historical Ride Cost Distribution
 
@@ -86,6 +103,14 @@ Night bookings have the highest average demand-supply ratio, which may suggest s
 
 The scatter plot between demand-supply ratio and historical ride cost does not show a very clear linear relationship. However, demand and supply are still important to explore because they are central to dynamic pricing.
 
+## Potential Pricing Review Table
+
+Created a pricing review table to identify ride scenarios with a high demand-supply ratio. The table focused on scenarios where the `Demand_Supply_Ratio` was at least 4, meaning there were at least four riders for every available driver.
+
+The review table included rider demand, driver supply, location category, time of booking, vehicle type, demand-supply ratio, cost per minute, and historical ride cost.
+
+These scenarios may be important for dynamic pricing because a high number of riders compared to available drivers can create pricing pressure. This table helps identify cases that may need special attention in later pricing analysis.
+
 ## Cost per Minute Analysis
 
 Cost per minute was created to compare ride prices more fairly because longer rides usually have higher total costs.
@@ -124,6 +149,9 @@ However, these variables are still useful to explore because they describe custo
 * Expected ride duration has a clear positive relationship with historical ride cost.
 * Cost per minute helps compare rides more fairly because it considers ride duration.
 * Number of past rides and average ratings do not show a clear relationship with ride cost.
+* The data dictionary and categorical overview helped confirm the structure of the dataset before deeper analysis.
+* Focused filtering helped identify above-average cost rides that may be important for pricing analysis.
+* The pricing review table highlighted high demand-supply scenarios that may need special attention in dynamic pricing.
 
 ## Most Important Pricing Factors
 
@@ -136,5 +164,7 @@ Location category, time of booking, and demand-supply conditions may also affect
 ## Conclusion
 
 The EDA shows that expected ride duration and vehicle type are the strongest pricing factors in the dataset. Location category, time of booking, and demand-supply conditions also provide useful context for dynamic pricing.
+
+The additional data dictionary, focused filtering, and pricing review table make the analysis more structured and management-focused.
 
 These insights can support the next steps of the project, including pricing factor analysis, ride fare prediction, and business recommendations.
