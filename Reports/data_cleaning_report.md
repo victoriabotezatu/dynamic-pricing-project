@@ -4,7 +4,7 @@
 
 This report summarizes the data-cleaning process applied to the dynamic-pricing ride-sharing dataset.
 
-The main goal of this stage was to identify and address possible data-quality problems before performing exploratory data analysis and further modelling.
+The objective was to spot and fix potential data-quality issues before exploratory data analysis and further modelling. 
 
 The cleaning process examined:
 
@@ -49,7 +49,7 @@ After loading the dataset, the following checks were performed:
 
 ### 1. Dataset Structure and Data Types
 
-This consisted mainly in inspecting the number of rows, columns and the data type of each variable 
+This involved inspecting the number of rows and columns, as well as the data type of each variable.
 
 The conclusion was that the numerical variables were stored as integer or floating-point values, while the categorical variables were stored as text values.
 
@@ -57,7 +57,7 @@ But it is important to note that no incorrect data types were identified
 
 ### 2. Column Names and Text Values
 
-This consisted mainly in checking column names for possible leading or trailing spaces.
+This consisted mainly of checking column names for possible leading or trailing spaces.
 
 The values in the categorical columns were also stripped of possible leading or trailing spaces:
 
@@ -85,13 +85,13 @@ In the end, no missing values, blank categorical values, or textual missing-valu
 
 ### 4. Duplicate Records
 
-This consisted mainly in checking the dataset for completely identical rows.
+This involved checking the dataset for completely identical rows.
 
 The conclusion was that no exact duplicate rows were found and that's why no records were removed as duplicates
 
 ### 5. Categorical Values
 
-This consisted mainly in comparing the categorical variables with the expected categories
+This involved comparing the categorical variables with the expected categories
 
 The expected values were:
 
@@ -121,9 +121,9 @@ The observed average ratings ranged from 3.5 to 5.0, which is within the expecte
 
 ### 7. Unusual High-Cost Observation
 
-Given that the highest historical ride cost was approximately 836.12, we reviewed this observation and afterwards, associated it with a premium vehicle and an expected ride duration of 180 minutes.
+The highest historical ride cost was approximately 836.12. We inspected this observation and found that it corresponded to a premium ride with an expected duration of 180 minutes.
 
-In the end, because the observation represented a long premium ride and did not violate any logical data-quality condition, it was considered plausible and was not removed from the the dataset
+In the end, because the observation represented a long premium ride and did not violate any logical data-quality condition, it was considered plausible and was not removed from the dataset
 
 ## Cleaning Summary
 
@@ -147,13 +147,13 @@ After the necessary data cleaning operations/checks were performed, the validate
 
 `Data/Cleaned/cleaned_dynamic_pricing.csv`
 
-Because there was no need remove rows or impute values, the cleaned dataset contains the same 1,000 observations and 10 variables as the original dataset.
+Because there was no need remove to rows or impute values, the cleaned dataset contains the same 1,000 observations and 10 variables as the original dataset
 
 ## Data-Cleaning Limitations
 
-However, it is inportant to note that the dataset does not contain a unique ride identifier or an exact timestamp for each observation.
+However, it is important to note that the dataset does not contain a unique ride identifier or an exact timestamp for each observation.
 
-For this reason, during teh data cleaning process, duplicate detection was limited to identifying completely identical rows. Therefore, it was not possible to determine whether similar rows represented repeated records or separate rides with similar characteristics.
+For this reason, during the data cleaning process, duplicate detection was limited to identifying completely identical rows. Therefore, it was not possible to determine whether similar rows represented repeated records or separate rides with similar characteristics.
 
 Additionally, the high-cost observations were assessed using the variables available in the dataset. The absence of information such as ride distance, route, exact location, and currency limits the possibility of validating ride costs using external business rules
 
