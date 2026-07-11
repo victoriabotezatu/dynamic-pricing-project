@@ -2,169 +2,264 @@
 
 ## Project Overview
 
-This report summarizes the exploratory data analysis for the cleaned dynamic pricing ride-sharing dataset. The goal of the EDA was to understand patterns in ride cost, demand, supply, customer behavior, and ride characteristics.
+This report has the main goal to explain the process and findings of the exploratory data analysis of the cleaned dynamic-pricing ride-sharing dataset. 
+Therefore, we tried to keep it coincise and put forward only the main findings. 
 
-The analysis focuses on identifying which factors may influence ride pricing and how these factors can support a dynamic pricing strategy.
+The main objective of the analysis was to describe the distribution of historical ride cost and identify ride characteristics that show the clearest descriptive relationships with cost.
 
-## Dataset Overview
-
-The cleaned dataset contains:
-
-* 1000 rows
-* 10 original columns
-
-The dataset includes information about:
-
-* rider demand
-* driver supply
-* location category
-* customer loyalty status
-* number of past rides
-* average ratings
-* time of booking
-* vehicle type
-* expected ride duration
-* historical ride cost
-
-The main pricing variable analyzed in this report is `Historical_Cost_of_Ride`.
-
-## Data Dictionary and Categorical Overview
-
-Created a data dictionary in the EDA notebook to summarize the structure of the dataset. This overview included the column names, data types, missing values, and number of unique values for each column.
-
-A categorical overview was also created for `Location_Category`, `Customer_Loyalty_Status`, `Time_of_Booking`, and `Vehicle_Type`. This helped confirm the main category labels used in the dataset before continuing with the analysis.
-
-This step supports the EDA by providing a clearer understanding of the dataset structure and the variables available for pricing analysis.
+It is important to note that the analysis focuses on descriptive associations and does not attempt to establish causal relationships.
 
 
-## New Columns Created
+## Research Questions
 
-Three new columns were created during the EDA process:
+The exploratory analysis addresses the following questions:
 
-* `Demand_Supply_Ratio`: compares the number of riders to the number of available drivers.
-* `Demand_Supply_Difference`: shows the difference between riders and drivers.
-* `Cost_per_Minute`: compares ride cost while considering expected ride duration.
+1. Which ride characteristics show the clearest relationship with historical ride cost?
 
-These columns were created because the dataset does not include real-time information such as customer coordinates, driver coordinates, waiting time, or driver arrival time.
+2. How does historical ride cost differ across vehicle types, locations, booking times and customer loyalty groups, and does the vehicle-type difference remain visible across different ride-duration groups?
 
-The new columns help analyze demand pressure, supply availability, and pricing differences more clearly.
+## Dataset Information
 
-## Focused Data Filtering
+The analysis used the cleaned dataset from the data cleaning analysis saved as:
 
-Added a focused filtering step to identify rides with above-average historical cost. This was done by calculating the average value of `Historical_Cost_of_Ride` and selecting rides where the historical ride cost was higher than this average.
+`Data/Cleaned/cleaned_dynamic_pricing.csv`
 
-The filtered table included important pricing variables such as vehicle type, location category, time of booking, demand-supply ratio, and historical ride cost.
+The dataset contains:
 
-This section helps focus on higher-cost ride scenarios, which may be more important for understanding pricing pressure and dynamic pricing factors.
+- 1,000 observations
+- 10 original variables
+- 6 numerical variables
+- 4 categorical variables
 
-## Historical Ride Cost Distribution
+The target variable examined in this report is:
 
-Historical ride cost varies across the dataset.
+`Historical_Cost_of_Ride`
 
-Most ride costs are between approximately 221 and 510, based on the 25% and 75% values from the summary statistics. This shows that ride costs are spread across a wide range, making historical ride cost an important variable for pricing analysis.
+## Analysis Methods
 
-The distribution of historical ride cost helps show how ride prices are spread and whether there are many low-cost or high-cost rides in the dataset.
+The exploratory analysis included:
 
-## Average Ride Cost by Category
+- descriptive statistics
+- category frequencies
+- histograms
+- grouped summaries using count, mean, and median
+- bar charts for categorical comparisons
+- scatterplots for numerical comparisons
+- duration-group classification
+- a pivot table comparing vehicle type across duration groups
 
-Average historical ride cost was compared across vehicle type, location category, time of booking, and customer loyalty status.
+Additionaly, two additional demand-and-supply variables were also prepared for the team member responsible for the detailed demand-and-supply analysis.
 
-The main findings were:
+## Demand-and-Supply Feature Preparation
 
-* Premium rides have a higher average cost than economy rides.
-* Rural locations have the highest average ride cost.
-* Afternoon and morning bookings have slightly higher average ride costs than evening and night bookings.
-* Customer loyalty status shows only small differences in average ride cost.
+The following variables were created:
 
-These results suggest that vehicle type, location category, time of booking, and customer loyalty status may be useful pricing factors.
+### Demand-Supply Ratio
 
-## Demand and Supply Analysis
+`Demand_Supply_Ratio = Number_of_Riders / Number_of_Drivers`
 
-Demand and supply were analyzed using `Number_of_Riders`, `Number_of_Drivers`, `Demand_Supply_Ratio`, and `Demand_Supply_Difference`.
+### Demand-Supply Difference
 
-The analysis shows that rider demand is higher than driver supply across the dataset. On average, the dataset has around 60 riders and 27 available drivers per scenario.
+`Demand_Supply_Difference = Number_of_Riders - Number_of_Drivers`
 
-Average demand-supply ratio by location:
+These variables were added for reuse in the separate demand-and-supply analysis. 
 
-* Rural: 3.51
-* Suburban: 3.13
-* Urban: 3.07
+- Note: The detailed interpretation of demand–supply conditions or surge-pricing situations is not made in this report in order to avoid overlap with the work of the team member responsible for that analysis
 
-This means that rural areas have the highest number of riders per available driver on average. This may indicate stronger demand pressure in rural locations.
+The updated dataset containing the two additional variables was saved as:
 
-Average demand-supply ratio by time of booking:
+`Data/Cleaned/cleaned_dynamic_pricing_with_features.csv`
 
-* Afternoon: 3.12
-* Evening: 3.19
-* Morning: 3.19
-* Night: 3.42
+## Historical Ride-Cost Distribution
 
-Night bookings have the highest average demand-supply ratio, which may suggest stronger demand pressure at night.
+Historical ride cost has the following main descriptive statistics:
 
-The scatter plot between demand-supply ratio and historical ride cost does not show a very clear linear relationship. However, demand and supply are still important to explore because they are central to dynamic pricing.
+| Statistic | Historical ride cost |
+|---|---:|
+| Count | 1,000 |
+| Mean | 372.50 |
+| Median | 362.02 |
+| Standard deviation | 187.16 |
+| Minimum | 25.99 |
+| First quartile | 221.37 |
+| Third quartile | 510.50 |
+| Maximum | 836.12 |
 
-## Potential Pricing Review Table
+Observations: 
 
-Created a pricing review table to identify ride scenarios with a high demand-supply ratio. The table focused on scenarios where the `Demand_Supply_Ratio` was at least 4, meaning there were at least four riders for every available driver.
+- The mean is slightly higher than the median, indicating that some higher-cost observations raise the average
 
-The review table included rider demand, driver supply, location category, time of booking, vehicle type, demand-supply ratio, cost per minute, and historical ride cost.
+- The middle 50% of observations have historical ride costs between approximately 221.37 and 510.50
 
-These scenarios may be important for dynamic pricing because a high number of riders compared to available drivers can create pricing pressure. This table helps identify cases that may need special attention in later pricing analysis.
+- The highest observations were retained because they were associated with long rides and did not violate the data-quality rules
 
-## Cost per Minute Analysis
+## Historical Ride Cost by Vehicle Type
 
-Cost per minute was created to compare ride prices more fairly because longer rides usually have higher total costs.
+Premium rides have a higher average historical ride cost than economy rides.
 
-The main findings were:
+| Vehicle type | Average historical cost |
+|---|---:|
+| Economy | 346.57 |
+| Premium | 396.25 |
 
-* Premium rides have a higher average cost per minute than economy rides.
-* Cost per minute is similar across location categories.
+Observations: 
 
-This suggests that vehicle type may be an important pricing factor when ride duration is considered.
+- The average difference is approximately 49.68.
 
-## Ride Duration and Ride Cost
+- Vehicle type shows the clearest difference among the categorical comparisons included in this EDA.
 
-Expected ride duration shows a clear positive relationship with historical ride cost.
+- This difference should still be interpreted carefully because other variables, especially ride duration, may also contribute to the observed cost difference
 
-This means that longer rides usually have higher costs. Expected ride duration appears to be one of the most important pricing factors in the dataset.
+## Historical Ride Cost by Location Category
 
-This relationship is important because ride duration directly affects the amount of time and resources needed for a ride.
+Rural rides have the highest average historical ride cost, followed by suburban and urban rides.
 
-## Customer History and Ratings
+However, the differences between the location categories are relatively small compared with the difference between vehicle types.
 
-The number of past rides does not show a clear relationship with historical ride cost.
+The observed location differences may also reflect differences in ride duration or other ride characteristics. 
 
-Average ratings also do not show a clear relationship with historical ride cost.
+It is important to note that the categories only describe broad location types and do not provide exact origins, destinations, or routes.
 
-However, these variables are still useful to explore because they describe customer behavior and service quality. They may also be useful in later stages of the project if customer-based pricing patterns are explored further.
+## Historical Ride Cost by Time of Booking
 
-## Key Findings
+Afternoon bookings have the highest average historical ride cost.
 
-* Premium rides cost more than economy rides.
-* Rural locations have the highest average ride cost and the highest demand-supply ratio.
-* Night bookings have the highest average demand-supply ratio.
-* Afternoon and morning bookings have slightly higher average ride costs than evening and night bookings.
-* Demand is higher than driver supply across the dataset.
-* Demand-supply ratio does not show a clear linear relationship with ride cost.
-* Expected ride duration has a clear positive relationship with historical ride cost.
-* Cost per minute helps compare rides more fairly because it considers ride duration.
-* Number of past rides and average ratings do not show a clear relationship with ride cost.
-* The data dictionary and categorical overview helped confirm the structure of the dataset before deeper analysis.
-* Focused filtering helped identify above-average cost rides that may be important for pricing analysis.
-* The pricing review table highlighted high demand-supply scenarios that may need special attention in dynamic pricing.
+Morning bookings have a similar average, while evening and night bookings have somewhat lower averages.
 
-## Most Important Pricing Factors
+The differences between booking periods are relatively small. Therefore, time of booking does not show as clear a descriptive relationship with cost as expected ride duration or vehicle type.
 
-Based on the EDA, the most important pricing factor appears to be expected ride duration because it shows a clear positive relationship with historical ride cost.
+## Historical Ride Cost by Customer Loyalty Status
 
-Vehicle type is also important because premium rides have higher average costs and higher cost per minute than economy rides.
+Regular customers have the highest average historical ride cost, followed by Gold and Silver customers.
 
-Location category, time of booking, and demand-supply conditions may also affect pricing, but their relationships with ride cost are less direct than ride duration and vehicle type.
+However, the differences between loyalty groups are small.
+
+The results do not demonstrate that loyalty status causes higher or lower ride costs. Differences may be related to the types of rides booked by customers in each group.
+
+## Expected Ride Duration and Historical Ride Cost
+
+The scatterplot between expected ride duration and historical ride cost shows a clear positive descriptive association.
+
+Longer expected rides generally have higher historical costs.
+
+Both economy and premium rides follow this upward pattern. At similar ride durations, premium observations generally appear above economy observations.
+
+This indicates that expected ride duration and vehicle type are the two variables with the clearest descriptive relationships with historical ride cost in this part of the analysis.
+
+## Duration Groups and Vehicle Type
+
+Expected ride duration was divided into three groups:
+
+- Short: 60 minutes or less
+- Medium: more than 60 and up to 120 minutes
+- Long: more than 120 minutes
+
+The average historical ride costs were:
+
+| Duration group | Economy | Premium |
+|---|---:|---:|
+| Short | 118.42 | 170.61 |
+| Medium | 314.02 | 357.77 |
+| Long | 532.79 | 571.95 |
+
+Observations:
+
+- Average historical cost increases substantially from short to medium and long rides
+
+- Premium rides also have higher average costs than economy rides within every duration group
+
+- This comparison supports the descriptive finding that both ride duration and vehicle type are associated with historical ride cost
+
+## Number of Past Rides and Historical Ride Cost
+
+The scatterplot between the number of past rides and historical ride cost does not show a clear standalone pattern.
+
+Customers with both low and high numbers of past rides appear across a wide range of historical ride costs.
+
+Therefore, the number of past rides does not appear to be a strong direct pricing factor when examined by itself.
+
+It may still provide useful information when considered together with other variables in a predictive model.
+
+## Average Ratings and Historical Ride Cost
+
+The scatterplot between average customer ratings and historical ride cost does not show a clear standalone relationship.
+
+Low and high historical ride costs occur across the available rating range.
+
+Average ratings therefore do not appear to be a strong direct pricing factor in this descriptive analysis.
+
+The variable may still contribute information when combined with other variables during modelling.
+
+## Main Findings
+
+The main findings from the exploratory analysis are:
+
+- Historical ride cost has a mean of approximately 372.50 and a median of approximately 362.02.
+- Expected ride duration shows the clearest positive descriptive relationship with historical ride cost.
+- Longer rides generally have higher historical costs.
+- Premium rides have higher average historical costs than economy rides.
+- The premium–economy difference remains visible within short, medium, and long duration groups.
+- Vehicle type shows the largest observed difference among the categorical comparisons.
+- Rural rides have a slightly higher average cost than suburban and urban rides.
+- Afternoon and morning bookings have slightly higher average costs than evening and night bookings.
+- Customer loyalty groups show relatively small cost differences.
+- Number of past rides and average ratings do not show clear standalone relationships with historical ride cost.
+- The findings represent descriptive associations and should not be interpreted as proof of causation.
+
+## Dataset Limitations
+
+The analysis is affected by several dataset limitations.
+
+### Missing Ride Identifiers
+
+The dataset does not contain a unique ride or customer identifier. Individual rides and repeated customer observations cannot be tracked.
+
+### No Exact Dates or Timestamps
+
+`Time_of_Booking` contains only broad periods such as Morning, Afternoon, Evening, and Night.
+
+It is therefore not possible to study daily, weekly, seasonal, or event-related pricing patterns.
+
+### No Distance or Route Information
+
+The dataset includes expected ride duration but does not include ride distance, origin, destination, or route characteristics.
+
+Ride cost differences cannot be fully separated into duration, distance, and route effects.
+
+### Broad Location Categories
+
+Location is represented only by Urban, Suburban, and Rural categories.
+
+These broad categories may combine locations with very different ride conditions.
+
+### Unspecified Currency
+
+The currency used for `Historical_Cost_of_Ride` is not provided. The analysis therefore compares relative ride costs rather than interpreting the values in a specific currency.
+
+### No Observed Surge-Pricing Variable
+
+The dataset does not contain an observed surge multiplier or an official surge-pricing indicator.
+
+Surge conditions cannot be directly confirmed from the variables available in this EDA.
+
+### Demand and Supply Coverage
+
+All observations contain more riders than drivers.
+
+The dataset therefore does not allow comparison with balanced-market or driver-surplus situations.
+
+### Observational Analysis
+
+The EDA identifies patterns and associations within the available dataset.
+
+The results do not demonstrate that any individual variable causes ride cost to increase or decrease.
 
 ## Conclusion
 
-The EDA shows that expected ride duration and vehicle type are the strongest pricing factors in the dataset. Location category, time of booking, and demand-supply conditions also provide useful context for dynamic pricing.
+The exploratory analysis indicates that expected ride duration and vehicle type have the clearest descriptive relationships with historical ride cost.
 
-The additional data dictionary, focused filtering, and pricing review table make the analysis more structured and management-focused.
+Longer rides are generally more expensive, and premium rides have higher average costs than economy rides. The premium–economy difference remains visible across short, medium, and long ride-duration groups.
 
-These insights can support the next steps of the project, including pricing factor analysis, ride fare prediction, and business recommendations.
+Location category, booking time, and loyalty status show smaller differences. Number of past rides and average ratings do not show clear standalone relationships with historical ride cost.
+
+The two demand-and-supply variables were prepared and saved for the separate demand-and-supply analysis
