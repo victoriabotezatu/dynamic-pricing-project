@@ -4,7 +4,7 @@
 
 This report summarizes the data-cleaning process applied to the dynamic-pricing ride-sharing dataset.
 
-The objective was to spot and fix potential data-quality issues before exploratory data analysis and further modelling. 
+The objective was to spot and fix potential data-quality issues before exploratory data analysis and further modelling.
 
 The cleaning process examined:
 
@@ -121,7 +121,7 @@ The observed average ratings ranged from 3.5 to 5.0, which is within the expecte
 
 ### 7. Unusual High-Cost Observation
 
-The highest historical ride cost was approximately 836.12. We inspected this observation and found that it corresponded to a premium ride with an expected duration of 180 minutes.
+The highest historical ride cost was approximately 836.12. We inspectd this observation and found that it corresponded to a premium ride with an expected duration of 180 minutes.
 
 In the end, because the observation represented a long premium ride and did not violate any logical data-quality condition, it was considered plausible and was not removed from the dataset
 
@@ -151,7 +151,7 @@ Because there was no need remove to rows or impute values, the cleaned dataset c
 
 ## Data-Cleaning Limitations
 
-However, it is important to note that the dataset does not contain a unique ride identifier or an exact timestamp for each observation.
+However, it is important to note that teh dataset does not contain a unique ride identifier or an exact timestamp for each observation.
 
 For this reason, during the data cleaning process, duplicate detection was limited to identifying completely identical rows. Therefore, it was not possible to determine whether similar rows represented repeated records or separate rides with similar characteristics.
 

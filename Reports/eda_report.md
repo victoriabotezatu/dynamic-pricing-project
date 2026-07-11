@@ -7,7 +7,7 @@ Therefore, we tried to keep it coincise and put forward only the main findings.
 
 The main objective of the analysis was to describe the distribution of historical ride cost and identify ride characteristics that show the clearest descriptive relationships with cost.
 
-It is important to note that the analysis focuses on descriptive associations and does not attempt to establish causal relationships.
+It is important to note that the analysis focuses on descriptive associations and does not attempt to establish causal relationships
 
 
 ## Research Questions
@@ -118,7 +118,7 @@ However, the differences between the location categories are relatively small co
 
 The observed location differences may also reflect differences in ride duration or other ride characteristics. 
 
-It is important to note that the categories only describe broad location types and do not provide exact origins, destinations, or routes.
+It is important to note that the categories only describe broad location types and do not provide exact origins, destinations, or routes
 
 ## Historical Ride Cost by Time of Booking
 
@@ -126,7 +126,7 @@ Afternoon bookings have the highest average historical ride cost.
 
 Morning bookings have a similar average, while evening and night bookings have somewhat lower averages.
 
-The differences between booking periods are relatively small. Therefore, time of booking does not show as clear a descriptive relationship with cost as expected ride duration or vehicle type.
+The differences between booking periods are relatively small. Therefore, time of booking does not show as clear a descriptive relationship with cost as expected ride duration or vehicle type
 
 ## Historical Ride Cost by Customer Loyalty Status
 
@@ -134,7 +134,7 @@ Regular customers have the highest average historical ride cost, followed by Gol
 
 However, the differences between loyalty groups are small.
 
-The results do not demonstrate that loyalty status causes higher or lower ride costs. Differences may be related to the types of rides booked by customers in each group.
+The results do not demonstrate that loyalty status causes higher or lower ride costs. Differences may be related to the types of rides booked by customers in each group
 
 ## Expected Ride Duration and Historical Ride Cost
 
@@ -144,7 +144,7 @@ Longer expected rides generally have higher historical costs.
 
 Both economy and premium rides follow this upward pattern. At similar ride durations, premium observations generally appear above economy observations.
 
-This indicates that expected ride duration and vehicle type are the two variables with the clearest descriptive relationships with historical ride cost in this part of the analysis.
+This indicates that expected ride duration and vehicle type are the two variables with the clearest descriptive relationships with historical ride cost in this part of the analysis
 
 ## Duration Groups and Vehicle Type
 
@@ -188,71 +188,71 @@ Low and high historical ride costs occur across the available rating range.
 
 Average ratings therefore do not appear to be a strong direct pricing factor in this descriptive analysis.
 
-The variable may still contribute information when combined with other variables during modelling.
+The variable may still contribute information when combined with other variables during modelling
 
 ## Main Findings
 
 The main findings from the exploratory analysis are:
 
-- Historical ride cost has a mean of approximately 372.50 and a median of approximately 362.02.
-- Expected ride duration shows the clearest positive descriptive relationship with historical ride cost.
-- Longer rides generally have higher historical costs.
-- Premium rides have higher average historical costs than economy rides.
-- The premium–economy difference remains visible within short, medium, and long duration groups.
-- Vehicle type shows the largest observed difference among the categorical comparisons.
-- Rural rides have a slightly higher average cost than suburban and urban rides.
-- Afternoon and morning bookings have slightly higher average costs than evening and night bookings.
-- Customer loyalty groups show relatively small cost differences.
-- Number of past rides and average ratings do not show clear standalone relationships with historical ride cost.
-- The findings represent descriptive associations and should not be interpreted as proof of causation.
+- Historical ride cost has a mean of approximately 372.50 and a median of approximately 362.02
+- Expected ride duration shows the clearest positive descriptive relationship with historical ride cost
+- Longer rides generally have higher historical costs
+- Premium rides have higher average historical costs than economy rides
+- The premium–economy difference remains visible within short, medium, and long duration groups
+- Vehicle type shows the largest observed difference among the categorical comparisons
+- Rural rides have a slightly higher average cost than suburban and urban rides
+- Afternoon and morning bookings have slightly higher average costs than evening and night bookings
+- Customer loyalty groups show relatively small cost differences
+- Number of past rides and average ratings do not show clear standalone relationships with historical ride cost
+- The findings represent descriptive associations and should not be interpreted as proof of causation
 
 ## Dataset Limitations
 
-The analysis is affected by several dataset limitations.
+The analysis is affected by several dataset limitations
 
 ### Missing Ride Identifiers
 
-The dataset does not contain a unique ride or customer identifier. Individual rides and repeated customer observations cannot be tracked.
+The dataset does not contain a unique ride or customer identifier. Individual rides and repeated customer observations cannot be tracked
 
 ### No Exact Dates or Timestamps
 
 `Time_of_Booking` contains only broad periods such as Morning, Afternoon, Evening, and Night.
 
-It is therefore not possible to study daily, weekly, seasonal, or event-related pricing patterns.
+It is therefore not possible to study daily, wekly, seasonal, or event-related pricing patterns
 
 ### No Distance or Route Information
 
 The dataset includes expected ride duration but does not include ride distance, origin, destination, or route characteristics.
 
-Ride cost differences cannot be fully separated into duration, distance, and route effects.
+Ride cost differences cannot be fully separated into duration, distance, and route effects
 
 ### Broad Location Categories
 
 Location is represented only by Urban, Suburban, and Rural categories.
 
-These broad categories may combine locations with very different ride conditions.
+These broad categories may combine locations with very different ride conditions
 
 ### Unspecified Currency
 
-The currency used for `Historical_Cost_of_Ride` is not provided. The analysis therefore compares relative ride costs rather than interpreting the values in a specific currency.
+The currency used for `Historical_Cost_of_Ride` is not provided. The analysis therefore compares relative ride costs rather than interpreting the values in a specific currency
 
 ### No Observed Surge-Pricing Variable
 
 The dataset does not contain an observed surge multiplier or an official surge-pricing indicator.
 
-Surge conditions cannot be directly confirmed from the variables available in this EDA.
+Surge conditions cannot be directly confirmed from the variables available in this EDA
 
 ### Demand and Supply Coverage
 
 All observations contain more riders than drivers.
 
-The dataset therefore does not allow comparison with balanced-market or driver-surplus situations.
+The dataset therefore does not allow comparison with balanced-market or driver-surplus situations
 
 ### Observational Analysis
 
 The EDA identifies patterns and associations within the available dataset.
 
-The results do not demonstrate that any individual variable causes ride cost to increase or decrease.
+The results do not demonstrate that any individual variable causes ride cost to increase or decrease
 
 ## Conclusion
 
