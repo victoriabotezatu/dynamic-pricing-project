@@ -9,7 +9,15 @@ CATEGORICAL_COLUMNS = [
     "Vehicle_Type"
 ]
 
-def plot_bar_chart(series, title, xlabel, ylabel):
+def plot_bar_chart(series, title, xlabel, ylabel, ax=None):
+    if ax is not None:
+        ax.bar(series.index, series.values)
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.tick_params(axis="x", rotation=45)
+        return
+
     plt.figure(figsize=(7, 4))
     plt.bar(series.index, series.values)
     plt.title(title)
@@ -61,7 +69,14 @@ def create_duration_vehicle_table(dataframe):
     )
     return duration_vehicle_table
 
-def plot_historical_cost_distribution(dataframe):
+def plot_historical_cost_distribution(dataframe, ax=None):
+    if ax is not None:
+        ax.hist(dataframe["Historical_Cost_of_Ride"],bins=20)
+        ax.set_title("Distribution of Historical Ride Cost")
+        ax.set_xlabel("Historical Cost of Ride")
+        ax.set_ylabel("Frequency")
+        return
+
     plt.figure(figsize=(7, 4))
 
     plt.hist(dataframe["Historical_Cost_of_Ride"],bins=20)
