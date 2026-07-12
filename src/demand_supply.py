@@ -1,8 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-df = pd.read_csv("cleaned_dynamic_pricing_with_features.csv")
+df = pd.read_csv(
+    r"D:\Microsoft VS Code Projects\TUM Programming\dynamic-pricing-project\Data\Cleaned\cleaned_dynamic_pricing_with_features.csv"
+)
 
 print(df.head())
 
@@ -14,7 +15,16 @@ print("Times of booking:", df["Time_of_Booking"].unique())
 print("Vehicle types:", df["Vehicle_Type"].unique())
 
 
-print(df[["Number_of_Riders", "Number_of_Drivers", "Demand_Supply_Difference", "Demand_Supply_Ratio"]].head())
+print(
+    df[
+        [
+            "Number_of_Riders",
+            "Number_of_Drivers",
+            "Demand_Supply_Difference",
+            "Demand_Supply_Ratio",
+        ]
+    ].head()
+)
 
 
 overall_demand_supply = df[["Number_of_Riders", "Number_of_Drivers"]].mean()
@@ -40,9 +50,7 @@ plt.show()
 
 
 df["Demand_Supply_Level"] = pd.qcut(
-    df["Demand_Supply_Ratio"],
-    3,
-    labels=["Low", "Medium", "High"]
+    df["Demand_Supply_Ratio"], 3, labels=["Low", "Medium", "High"]
 )
 
 print(df[["Demand_Supply_Ratio", "Demand_Supply_Level"]].head())
@@ -50,7 +58,12 @@ print(df["Demand_Supply_Level"].value_counts())
 
 
 pressure_summary = df.groupby("Demand_Supply_Level", observed=False)[
-    ["Number_of_Riders", "Number_of_Drivers", "Demand_Supply_Difference", "Demand_Supply_Ratio"]
+    [
+        "Number_of_Riders",
+        "Number_of_Drivers",
+        "Demand_Supply_Difference",
+        "Demand_Supply_Ratio",
+    ]
 ].mean()
 
 pressure_summary = pressure_summary.reindex(["Low", "Medium", "High"])
@@ -74,7 +87,12 @@ plt.show()
 location_order = ["Rural", "Suburban", "Urban"]
 
 location_summary = df.groupby("Location_Category")[
-    ["Number_of_Riders", "Number_of_Drivers", "Demand_Supply_Difference", "Demand_Supply_Ratio"]
+    [
+        "Number_of_Riders",
+        "Number_of_Drivers",
+        "Demand_Supply_Difference",
+        "Demand_Supply_Ratio",
+    ]
 ].mean()
 
 location_summary = location_summary.reindex(location_order)
@@ -93,14 +111,21 @@ plt.show()
 
 
 highest_pressure_location = location_summary["Demand_Supply_Ratio"].idxmax()
-print(f"Highest demand pressure location: {highest_pressure_location} "
-      f"(ratio = {location_summary['Demand_Supply_Ratio'].max():.2f})")
+print(
+    f"Highest demand pressure location: {highest_pressure_location} "
+    f"(ratio = {location_summary['Demand_Supply_Ratio'].max():.2f})"
+)
 
 
 time_order = ["Morning", "Afternoon", "Evening", "Night"]
 
 time_summary = df.groupby("Time_of_Booking")[
-    ["Number_of_Riders", "Number_of_Drivers", "Demand_Supply_Difference", "Demand_Supply_Ratio"]
+    [
+        "Number_of_Riders",
+        "Number_of_Drivers",
+        "Demand_Supply_Difference",
+        "Demand_Supply_Ratio",
+    ]
 ].mean()
 
 time_summary = time_summary.reindex(time_order)
@@ -122,12 +147,12 @@ heatmap_data = pd.pivot_table(
     values="Demand_Supply_Ratio",
     index="Location_Category",
     columns="Time_of_Booking",
-    aggfunc="mean"
+    aggfunc="mean",
 )
 
 heatmap_data = heatmap_data.reindex(
     index=["Rural", "Suburban", "Urban"],
-    columns=["Morning", "Afternoon", "Evening", "Night"]
+    columns=["Morning", "Afternoon", "Evening", "Night"],
 )
 
 print(heatmap_data.round(2))
@@ -151,15 +176,19 @@ for i in range(len(heatmap_data.index)):
 plt.show()
 
 
-surge_candidates = df.groupby(["Location_Category", "Time_of_Booking"])[
-    "Demand_Supply_Ratio"
-].mean().reset_index()
+surge_candidates = (
+    df.groupby(["Location_Category", "Time_of_Booking"])["Demand_Supply_Ratio"]
+    .mean()
+    .reset_index()
+)
 
 surge_candidates = surge_candidates.sort_values("Demand_Supply_Ratio", ascending=False)
 
 print(surge_candidates.head(10).round(2))
 top_surge = surge_candidates.head(5).copy()
-top_surge["Market_Situation"] = top_surge["Location_Category"] + " - " + top_surge["Time_of_Booking"]
+top_surge["Market_Situation"] = (
+    top_surge["Location_Category"] + " - " + top_surge["Time_of_Booking"]
+)
 
 # Top demand pressure situations
 plt.bar(top_surge["Market_Situation"], top_surge["Demand_Supply_Ratio"])
@@ -179,7 +208,12 @@ plt.show()
 loyalty_order = ["Regular", "Silver", "Gold"]
 
 loyalty_summary = df.groupby("Customer_Loyalty_Status")[
-    ["Number_of_Riders", "Number_of_Drivers", "Demand_Supply_Difference", "Demand_Supply_Ratio"]
+    [
+        "Number_of_Riders",
+        "Number_of_Drivers",
+        "Demand_Supply_Difference",
+        "Demand_Supply_Ratio",
+    ]
 ].mean()
 
 loyalty_summary = loyalty_summary.reindex(loyalty_order)
@@ -198,7 +232,12 @@ plt.show()
 vehicle_order = ["Economy", "Premium"]
 
 vehicle_summary = df.groupby("Vehicle_Type")[
-    ["Number_of_Riders", "Number_of_Drivers", "Demand_Supply_Difference", "Demand_Supply_Ratio"]
+    [
+        "Number_of_Riders",
+        "Number_of_Drivers",
+        "Demand_Supply_Difference",
+        "Demand_Supply_Ratio",
+    ]
 ].mean()
 
 vehicle_summary = vehicle_summary.reindex(vehicle_order)
@@ -216,5 +255,3 @@ plt.xticks(rotation=0)
 plt.show()
 for vehicle, ratio in vehicle_summary["Demand_Supply_Ratio"].items():
     print(f"{vehicle}: average demand-supply ratio = {ratio:.2f}")
-
-
