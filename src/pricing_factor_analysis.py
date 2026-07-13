@@ -1,17 +1,17 @@
-import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import save_chart
 
-target = "Historical_Cost_of_Ride"
-numeric_cols = [
+TARGET = "Historical_Cost_of_Ride"
+NUMERIC_COLUMNS = [
     "Number_of_Riders",
     "Number_of_Drivers",
     "Number_of_Past_Rides",
     "Average_Ratings",
     "Expected_Ride_Duration",
 ]
-categorical_cols = [
+CATEGORICAL_COLUMNS = [
     "Location_Category",
     "Customer_Loyalty_Status",
     "Time_of_Booking",
@@ -19,33 +19,31 @@ categorical_cols = [
 ]
 
 
-def load_data():
-    project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    return pd.read_csv(
-        os.path.join(
-            project_dir, "Data", "Cleaned", "cleaned_dynamic_pricing_with_features.csv"
-        )
-    )
+def plot_numeric_scatter(dataframe, column, save=False):
+    fig = plt.figure(figsize=(7, 4))
 
+    plt.scatter(dataframe[column], dataframe[TARGET], alpha=0.4, s=15)
 
-# Price versus a single numeric factor
-def plot_numeric_scatter(df, col):
-    plt.scatter(df[col], df[target], alpha=0.4, s=15)
-
-    slope, intercept = np.polyfit(df[col], df[target], 1)
-    x_line = np.array([df[col].min(), df[col].max()])
+    slope, intercept = np.polyfit(dataframe[column], dataframe[TARGET], 1)
+    x_line = np.array([dataframe[column].min(), dataframe[column].max()])
     plt.plot(x_line, slope * x_line + intercept, color="red")
 
-    r = df[col].corr(df[target])
-    plt.xlabel(col, labelpad=15)
-    plt.ylabel(target, labelpad=15)
-    plt.title(f"{col} vs Price (r = {r:.2f})")
-    plt.show()
+    r = dataframe[column].corr(dataframe[TARGET])
+    plt.xlabel(column, labelpad=15)
+    plt.ylabel(TARGET, labelpad=15)
+    plt.title(f"{column} vs Price (r = {r:.2f})")
+    plt.tight_layout()
+
+    if save:
+        save_chart.save_chart(fig, f"{column.lower()}_vs_price.png")
+    else:
+        plt.show()
 
 
-# Correlation heatmap
-def plot_correlation_heatmap(df):
-    corr = df[numeric_cols + [target]].corr()
+def plot_correlation_heatmap(dataframe, save=False):
+    fig = plt.figure(figsize=(7, 4))
+
+    corr = dataframe[NUMERIC_COLUMNS + [TARGET]].corr()
 
     plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
 
@@ -59,67 +57,78 @@ def plot_correlation_heatmap(df):
             plt.text(j, i, round(corr.iloc[i, j], 2), ha="center", va="center")
 
     plt.tight_layout()
-    plt.show()
+
+    if save:
+        save_chart.save_chart(fig, "correlation_heatmap.png")
+    else:
+        plt.show()
 
 
-# Effect of a single categorical factor on price
-def plot_categorical_box(df, col):
-    groups = [g[target].values for _, g in df.groupby(col)]
-    grand_mean = df[target].mean()
+def plot_categorical_box(dataframe, column, save=False):
+    groups = [group[TARGET].values for _, group in dataframe.groupby(column)]
+    grand_mean = dataframe[TARGET].mean()
     k = len(groups)
-    n = len(df)
-    ss_between = sum(len(g) * (g.mean() - grand_mean) ** 2 for g in groups)
-    ss_within = sum(((g - g.mean()) ** 2).sum() for g in groups)
+    n = len(dataframe)
+    ss_between = sum(len(group) * (group.mean() - grand_mean) ** 2 for group in groups)
+    ss_within = sum(((group - group.mean()) ** 2).sum() for group in groups)
     f_stat = (ss_between / (k - 1)) / (ss_within / (n - k))
 
-    df.boxplot(column=target, by=col)
-    plt.title(f"{col} (ANOVA F = {f_stat:.2f})")
+    ax = dataframe.boxplot(column=TARGET, by=column)
+    fig = ax.get_figure()
+    fig.set_size_inches(7, 4)
+
+    plt.title(f"{column} (ANOVA F = {f_stat:.2f})")
     plt.suptitle("")
     plt.xlabel("")
-    plt.ylabel(target)
+    plt.ylabel(TARGET)
     plt.xticks(rotation=20)
-    plt.show()
+    plt.tight_layout()
+
+    if save:
+        save_chart.save_chart(fig, f"{column.lower()}_price_boxplot.png")
+    else:
+        plt.show()
 
 
-# Price versus demand-supply pressure
-def plot_demand_supply_scatter(df):
-    plt.scatter(df["Demand_Supply_Ratio"], df[target], alpha=0.4, s=15)
+def plot_demand_supply_scatter(dataframe, save=False):
+    fig = plt.figure(figsize=(7, 4))
 
-    slope, intercept = np.polyfit(df["Demand_Supply_Ratio"], df[target], 1)
-    x_line = np.array([df["Demand_Supply_Ratio"].min(), df["Demand_Supply_Ratio"].max()])
+    plt.scatter(dataframe["Demand_Supply_Ratio"], dataframe[TARGET], alpha=0.4, s=15)
+
+    slope, intercept = np.polyfit(dataframe["Demand_Supply_Ratio"], dataframe[TARGET], 1)
+    x_line = np.array(
+        [dataframe["Demand_Supply_Ratio"].min(), dataframe["Demand_Supply_Ratio"].max()]
+    )
     plt.plot(x_line, slope * x_line + intercept, color="red")
 
-    r = df["Demand_Supply_Ratio"].corr(df[target])
+    r = dataframe["Demand_Supply_Ratio"].corr(dataframe[TARGET])
     plt.xlabel("Demand-Supply Ratio", labelpad=15)
-    plt.ylabel(target, labelpad=15)
+    plt.ylabel(TARGET, labelpad=15)
     plt.title(f"Demand-Supply Ratio vs Price (r = {r:.2f})")
-    plt.show()
+    plt.tight_layout()
+
+    if save:
+        save_chart.save_chart(fig, "demand_supply_ratio_vs_price.png")
+    else:
+        plt.show()
 
 
-# Price by demand-supply level
-def plot_demand_supply_level(df):
-    df["Demand_Supply_Level"] = pd.qcut(
-        df["Demand_Supply_Ratio"], 3, labels=["Low", "Medium", "High"]
+def plot_demand_supply_level(dataframe, save=False):
+    dataframe["Demand_Supply_Level"] = pd.qcut(
+        dataframe["Demand_Supply_Ratio"], 3, labels=["Low", "Medium", "High"]
     )
 
-    df.boxplot(column=target, by="Demand_Supply_Level")
+    ax = dataframe.boxplot(column=TARGET, by="Demand_Supply_Level")
+    fig = ax.get_figure()
+    fig.set_size_inches(7, 4)
+
     plt.title("Price by Demand-Supply Level")
     plt.suptitle("")
     plt.xlabel("Demand-Supply Level")
-    plt.ylabel(target)
-    plt.show()
+    plt.ylabel(TARGET)
+    plt.tight_layout()
 
-
-if __name__ == "__main__":
-    df = load_data()
-
-    for col in numeric_cols:
-        plot_numeric_scatter(df, col)
-
-    plot_correlation_heatmap(df)
-
-    for col in categorical_cols:
-        plot_categorical_box(df, col)
-
-    plot_demand_supply_scatter(df)
-    plot_demand_supply_level(df)
+    if save:
+        save_chart.save_chart(fig, "price_by_demand_supply_level.png")
+    else:
+        plt.show()
