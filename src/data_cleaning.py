@@ -7,6 +7,16 @@ CATEGORICAL_COLUMNS = [
     "Time_of_Booking",
     "Vehicle_Type"
 ]
+
+NUMERICAL_COLUMNS = [
+    "Number_of_Riders",
+    "Number_of_Drivers",
+    "Number_of_Past_Rides",
+    "Average_Ratings",
+    "Expected_Ride_Duration",
+    "Historical_Cost_of_Ride"
+]
+
 EXPECTED_CATEGORIES = {
     "Location_Category": [
         "Urban",
@@ -89,6 +99,28 @@ def count_invalid_numerical_values(dataframe):
 
     return invalid_values
 
+def calculate_outlier_summary(dataframe):
+    outlier_results = []
+
+    for column in NUMERICAL_COLUMNS:
+        q1 = dataframe[column].quantile(0.25)
+        q3 = dataframe[column].quantile(0.75)
+        iqr = q3 - q1
+
+        lower_bound = q1-1.5 * iqr
+        upper_bound = q3+1.5 * iqr
+
+        outlier_mask = (
+            (dataframe[column] < lower_bound) | (dataframe[column] > upper_bound))
+
+        outlier_results.append({
+            "Variable": column,
+            "Lower bound": lower_bound,
+            "Upper bound": upper_bound,
+            "Potential outliers": int(outlier_mask.sum())
+        })
+
+    return pd.DataFrame(outlier_results)
 
 def clean_dataset(dataframe):
     original_row_count = len(dataframe)
@@ -218,6 +250,9 @@ def run_data_cleaning(input_file, output_file):
     print("Output file:", output_file)
     print("Final shape:", cleaned_dataframe.shape)
 
+
+    df_outlier = calculate_outlier_summary(dataframe=dataframe)
+    print(df_outlier)
     return cleaned_dataframe
 
 
