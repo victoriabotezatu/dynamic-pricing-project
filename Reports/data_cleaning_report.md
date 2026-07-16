@@ -16,6 +16,7 @@ The cleaning process examined:
 - categorical labels
 - invalid numerical values
 - minimum, maximum, and potentially unusual numerical observations
+- potential numerical outliers using the interquartile range method
 
 ## Dataset Information
 
@@ -119,7 +120,45 @@ The conclusion is that no invalid numerical values were found
 
 The observed average ratings ranged from 3.5 to 5.0, which is within the expected 1-to-5 interval
 
-### 7. Unusual High-Cost Observation
+### 7. Outlier Analysis
+
+This consisted mainly of checking all six numerical variables for potential outliers using the interquartile range, or IQR, method.
+
+The first quartile, `Q1`, represents the 25th percentile
+The third quartile, `Q3`, represents the 75th percentile
+The IQR measures the spread of the middle 50% of the observations:
+
+IQR = Q3 - Q1
+
+Potential outliers were defined as observations outside the following boundaries:
+
+$$
+\text{Lower bound} = Q1 - 1.5 \times IQR
+$$
+
+$$
+\text{Upper bound} = Q3 + 1.5 \times IQR
+$$
+
+The results were:
+
+| Variable | Lower bound | Upper bound | Potential outliers |
+|---|---:|---:|---:|
+| `Number_of_Riders` | -21.50 | 142.50 | 0 |
+| `Number_of_Drivers` | -29.50 | 78.50 | 10 |
+| `Number_of_Past_Rides` | -50.00 | 150.00 | 0 |
+| `Average_Ratings` | 2.73 | 5.78 | 0 |
+| `Expected_Ride_Duration` | -65.12 | 267.88 | 0 |
+| `Historical_Cost_of_Ride` | -212.33 | 944.20 | 0 |
+
+The IQR method identified 10 potential outliers in `Number_of_Drivers`. 
+These observations contained between 80 and 89 drivers, which was above the calculated upper boundary of 78.5.
+
+However, the corresponding number of riders ranged from 91 to 100. This suggests that these observations represented periods of high ride-sharing activity rather than incorrect values.
+
+So, in conclusion, no potential outliers were found in the other numerical variables. The 10 potential outliers in `Number_of_Drivers` were considered logically possible and were supported by high rider numbers. For this reason, they were retained in the dataset.
+
+### 8. Unusual High-Cost Observation
 
 The highest historical ride cost was approximately 836.12. We inspectd this observation and found that it corresponded to a premium ride with an expected duration of 180 minutes.
 
@@ -163,6 +202,10 @@ Additionally, the high-cost observations were assessed using the variables avail
 
 - No missing values, blank values, textual missing markers, exact duplicate rows, inconsistent categories, or impossible numerical values were identified
 
-- The maximum historical ride cost was inspected and considered plausible because it was associated with a long premium ride
+- The IQR method identified 10 potential outliers in Number_of_Drivers, but hese observations were retained because they were associated with similarly high numbers of riders and appeared to represent valid periods of high activity
 
-- All 1,000 observations were retained, and the cleaned dataset was saved for the exploratory data analysis stage
+- No IQR outliers were identified in the other numerical variables
+
+- The maximum historical ride cost was inspected and considered plausible because it was associated with a long premium ride and remained below the IQR upper boundary
+
+- All 1,000 observations were retained, and the cleaned dataset was saved for the exploratory data analysis stage.
